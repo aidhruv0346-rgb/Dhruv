@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /studio
+Disallow: /api
+
+# Host
+Host: https://dhruvpipaliya.com
+
+# Sitemaps
+Sitemap: https://dhruvpipaliya.com/sitemap.xml
