@@ -6,7 +6,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         display: ["var(--font-clash)", "Syne", "sans-serif"],
-        heading: ["var(--font-syne)", "Syne", "sans-serif"],
+        heading: ["var(--font-outfit)", "var(--font-syne)", "Syne", "sans-serif"],
         sans: ["var(--font-dm-sans)", "DM Sans", "sans-serif"],
         mono: ["var(--font-jetbrains)", "JetBrains Mono", "monospace"]
       },
@@ -19,7 +19,8 @@ const config: Config = {
         accent: {
           violet: "var(--color-accent-1)",
           teal: "var(--color-accent-2)",
-          coral: "var(--color-accent-3)"
+          coral: "var(--color-accent-3)",
+          gold: "var(--color-accent-4)"
         },
         ink: {
           primary: "var(--color-text-primary)",
@@ -28,9 +29,9 @@ const config: Config = {
         }
       },
       boxShadow: {
-        card: "0 0 40px rgba(108,99,255,0.08)",
-        glow: "0 0 60px rgba(108,99,255,0.20)",
-        teal: "0 0 60px rgba(0,212,170,0.15)"
+        card: "0 18px 70px rgba(0,0,0,0.32), 0 0 40px rgba(139,92,246,0.10)",
+        glow: "0 0 42px rgba(139,92,246,0.32), 0 0 70px rgba(6,245,197,0.12)",
+        teal: "0 0 60px rgba(6,245,197,0.20)"
       },
       animation: {
         marquee: "marquee 30s linear infinite",
