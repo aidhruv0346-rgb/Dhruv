@@ -20,7 +20,9 @@ async function importKey(secret: string) {
 }
 
 function getSecret() {
-  return process.env.ADMIN_JWT_SECRET || "development_admin_secret_change_me_32_chars";
+  const secret = process.env.ADMIN_JWT_SECRET;
+  if (!secret) throw new Error("ADMIN_JWT_SECRET is not configured");
+  return secret;
 }
 
 export async function signAdminToken(days: number) {
@@ -34,6 +36,7 @@ export async function signAdminToken(days: number) {
 
 export async function verifyAdminToken(token?: string) {
   if (!token) return false;
+  if (!process.env.ADMIN_JWT_SECRET) return false;
   const [header, payload, signature] = token.split(".");
   if (!header || !payload || !signature) return false;
 

@@ -21,8 +21,12 @@ export async function POST(request: NextRequest) {
   const password = String(body.password || "");
   const rememberMe = Boolean(body.rememberMe);
 
-  const validEmail = process.env.ADMIN_EMAIL || "ai.dhruv0346@gmail.com";
-  const validPassword = process.env.ADMIN_PASSWORD || "admin123";
+  const validEmail = process.env.ADMIN_EMAIL;
+  const validPassword = process.env.ADMIN_PASSWORD;
+
+  if (!validEmail || !validPassword || !process.env.ADMIN_JWT_SECRET) {
+    return NextResponse.json({ success: false, message: "Admin auth is not configured" }, { status: 503 });
+  }
 
   if (email === validEmail && password === validPassword) {
     attempts.delete(ip);
