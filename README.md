@@ -73,6 +73,31 @@ The site runs without secrets, but production email/CMS features need:
 - `/api/contact`
 - `/api/newsletter`
 
+## Secret Admin Panel
+
+The secret admin login is available only by typing:
+
+```text
+/admin
+```
+
+Do not add this URL to any public navigation, footer, sitemap, or page content.
+
+Local fallback credentials, only when environment variables are missing:
+
+```text
+ADMIN_EMAIL=ai.dhruv0346@gmail.com
+ADMIN_PASSWORD=admin123
+```
+
+For production, set these in Vercel:
+
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+- `ADMIN_JWT_SECRET`
+
+The current admin CRUD storage uses local JSON files in `data/` as a simple fallback. For durable production editing on Vercel, connect Supabase or Vercel Postgres and move the CRUD layer from JSON files to the database, because serverless deployments do not persist filesystem writes reliably.
+
 ## Deployment Checklist
 
 - Run `npm run build`

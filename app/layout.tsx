@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dhruvpipaliya.com"),
@@ -31,11 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <CustomCursor />
-        <Navbar />
-        {children}
-        <Footer />
-        <Analytics />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

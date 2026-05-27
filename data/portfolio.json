@@ -1,0 +1,17 @@
+[
+  {
+    "id": "social-media-management-portfolio",
+    "title": "Social Media Management Portfolio",
+    "category": "Social Media",
+    "clientName": "Dhruv Pipaliya",
+    "description": "A PDF portfolio showcasing social media management work and campaign presentation.",
+    "resultStat": "View Dhruv's social media management portfolio PDF",
+    "imageUrl": "/images/project-2.svg",
+    "projectUrl": "/portfolio/social-media-management-portfolio.pdf",
+    "isFeatured": true,
+    "displayOrder": 0,
+    "tags": ["Social Media", "Portfolio", "Content Strategy"],
+    "createdAt": "2026-05-27T00:00:00.000Z",
+    "updatedAt": "2026-05-27T00:00:00.000Z"
+  }
+]

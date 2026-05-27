@@ -3,6 +3,8 @@ User-agent: *
 Allow: /
 Disallow: /studio
 Disallow: /api
+Disallow: /admin
+Disallow: /api/admin/
 
 # Host
 Host: https://dhruvpipaliya.com
