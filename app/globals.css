@@ -6,19 +6,19 @@
 @tailwind utilities;
 
 :root {
-  --color-bg-primary: #f8fbff;
-  --color-bg-secondary: #eef5ff;
-  --color-bg-card: #ffffff;
+  --color-bg-primary: #07070c;
+  --color-bg-secondary: #10121b;
+  --color-bg-card: #171923;
   --color-accent-1: #2563eb;
   --color-accent-2: #2563eb;
   --color-accent-3: #2563eb;
   --color-accent-4: #2563eb;
-  --color-text-primary: #0f172a;
-  --color-text-body: #475569;
-  --color-text-muted: #64748b;
-  --color-border: #dbe7ff;
-  --color-glow-1: rgba(37, 99, 235, 0.16);
-  --color-glow-2: rgba(37, 99, 235, 0.10);
+  --color-text-primary: #f8fbff;
+  --color-text-body: #b8c2d8;
+  --color-text-muted: #737f96;
+  --color-border: #242a3a;
+  --color-glow-1: rgba(37, 99, 235, 0.22);
+  --color-glow-2: rgba(37, 99, 235, 0.14);
   --font-clash: "Clash Display";
   --font-syne: "Syne";
   --font-dm-sans: "DM Sans";
@@ -36,9 +36,9 @@ html {
 
 body {
   background:
-    radial-gradient(circle at 12% 5%, rgba(37, 99, 235, 0.12), transparent 34rem),
-    radial-gradient(circle at 88% 10%, rgba(37, 99, 235, 0.08), transparent 30rem),
-    linear-gradient(180deg, #f8fbff 0%, #ffffff 44%, #f3f7ff 100%);
+    radial-gradient(circle at 12% 5%, rgba(37, 99, 235, 0.18), transparent 34rem),
+    radial-gradient(circle at 88% 10%, rgba(37, 99, 235, 0.10), transparent 30rem),
+    linear-gradient(180deg, #07070c 0%, #0b0d14 44%, #07070c 100%);
   color: var(--color-text-body);
   font-family: var(--font-dm-sans), sans-serif;
   font-size: 16px;
@@ -58,8 +58,8 @@ a {
 
 .dot-grid {
   background-image:
-    linear-gradient(rgba(37, 99, 235, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, 0.055) 1px, transparent 1px);
+    linear-gradient(rgba(248, 251, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(248, 251, 255, 0.045) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
@@ -72,7 +72,7 @@ a {
 }
 
 .text-gradient {
-  background: linear-gradient(115deg, #0f172a 0%, #2563eb 48%, #1d4ed8 100%);
+  background: linear-gradient(115deg, #ffffff 0%, #93c5fd 42%, #2563eb 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -108,7 +108,7 @@ a {
 }
 
 .card-hover {
-  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(239, 246, 255, 0.68));
+  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
   backdrop-filter: blur(14px);
   transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease, background 240ms ease;
 }
@@ -163,11 +163,7 @@ a {
   }
 
   .bg-bg-card {
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
-  }
-
-  .text-white {
-    color: var(--color-text-primary) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
   }
 
   .text-ink-body,
@@ -176,15 +172,11 @@ a {
   }
 
   [class*="border-white/10"] {
-    border-color: rgba(37, 99, 235, 0.14) !important;
+    border-color: rgba(248, 251, 255, 0.10) !important;
   }
 
   [class*="bg-white/"] {
-    background-color: rgba(255, 255, 255, 0.72) !important;
-  }
-
-  .cta-invert .text-white {
-    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.06) !important;
   }
 
   [class*="bg-accent-violet"].text-white,
