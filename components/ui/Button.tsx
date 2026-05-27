@@ -17,9 +17,9 @@ export function Button({ href, children, variant = "primary", size = "md", class
     size === "sm" && "h-10 px-4 text-sm",
     size === "md" && "h-12 px-5",
     size === "lg" && "h-14 px-7 text-lg",
-    variant === "primary" && "bg-gradient-to-r from-accent-violet via-accent-coral to-accent-teal text-white shadow-glow hover:brightness-110",
-    variant === "ghost" && "border border-white/10 bg-white/[.06] text-ink-primary shadow-card hover:border-accent-teal hover:bg-white/[.10] hover:text-white",
-    variant === "outline" && "border border-accent-violet/60 bg-accent-violet/5 text-ink-primary hover:border-accent-teal hover:bg-accent-teal/10",
+    variant === "primary" && "bg-accent-violet text-white shadow-glow hover:bg-blue-700",
+    variant === "ghost" && "border border-white/10 bg-white/[.72] text-ink-primary shadow-card hover:border-accent-violet hover:bg-blue-50",
+    variant === "outline" && "border border-accent-violet/35 bg-accent-violet/5 text-ink-primary hover:border-accent-violet hover:bg-accent-violet/10",
     className
   );
   const content = <>{children}<ArrowRight size={18} /></>;
