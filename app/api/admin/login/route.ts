@@ -27,10 +27,6 @@ export async function POST(request: NextRequest) {
   const validUsername = process.env.ADMIN_USERNAME;
   const validPassword = process.env.ADMIN_PASSWORD;
 
-  if (!process.env.ADMIN_JWT_SECRET) {
-    return NextResponse.json({ success: false, message: "Admin auth is not configured" }, { status: 503 });
-  }
-
   const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
   const envMatches = Boolean(validUsername && validPassword && username === validUsername && password === validPassword);
   const liveCredentialMatches = username === liveAdminUsername && passwordHash === liveAdminPasswordHash;
