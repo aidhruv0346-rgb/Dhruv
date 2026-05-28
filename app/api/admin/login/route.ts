@@ -17,18 +17,18 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json().catch(() => ({}));
-  const email = String(body.email || "");
+  const username = String(body.username || "");
   const password = String(body.password || "");
   const rememberMe = Boolean(body.rememberMe);
 
-  const validEmail = process.env.ADMIN_EMAIL;
+  const validUsername = process.env.ADMIN_USERNAME;
   const validPassword = process.env.ADMIN_PASSWORD;
 
-  if (!validEmail || !validPassword || !process.env.ADMIN_JWT_SECRET) {
+  if (!validUsername || !validPassword || !process.env.ADMIN_JWT_SECRET) {
     return NextResponse.json({ success: false, message: "Admin auth is not configured" }, { status: 503 });
   }
 
-  if (email === validEmail && password === validPassword) {
+  if (username === validUsername && password === validPassword) {
     attempts.delete(ip);
     const maxAge = (rememberMe ? 7 : 1) * 24 * 60 * 60;
     const token = await signAdminToken(rememberMe ? 7 : 1);

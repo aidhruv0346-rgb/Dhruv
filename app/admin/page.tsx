@@ -1,22 +1,22 @@
 "use client";
 
-import { Eye, EyeOff, Mail } from "lucide-react";
+import { Eye, EyeOff, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [fields, setFields] = useState<{ email?: string; password?: string }>({});
+  const [fields, setFields] = useState<{ username?: string; password?: string }>({});
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const nextFields: typeof fields = {};
-    if (!email) nextFields.email = "This field is required";
+    if (!username) nextFields.username = "This field is required";
     if (!password) nextFields.password = "This field is required";
     setFields(nextFields);
     if (Object.keys(nextFields).length) return;
@@ -25,7 +25,7 @@ export default function AdminLoginPage() {
     const response = await fetch("/api/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, rememberMe })
+      body: JSON.stringify({ username, password, rememberMe })
     });
     if (response.ok) {
       router.push("/admin/dashboard");
@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
       return;
     }
     setPassword("");
-    setError("Incorrect email or password.");
+    setError("Incorrect username or password.");
   }
 
   return (
@@ -52,17 +52,17 @@ export default function AdminLoginPage() {
         <form onSubmit={submit} className="w-full max-w-[420px] rounded-[20px] border border-white/40 bg-[rgba(180,210,240,.35)] px-8 py-10 text-[#152737] shadow-[0_8px_32px_rgba(31,38,135,.2)] backdrop-blur-[20px] md:px-10 md:py-12">
           <h1 className="mb-9 text-center font-heading text-3xl font-extrabold tracking-[.18em]">LOGIN</h1>
           <label className="block">
-            <span className="sr-only">Email</span>
-            <div className={`flex items-center border-b ${fields.email ? "border-red-500" : "border-[#152737]/50"}`}>
-              <input value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 flex-1 bg-transparent outline-none placeholder:text-[#152737]/75" placeholder="Email" />
-              <Mail size={18} />
+            <span className="sr-only">Username</span>
+            <div className={`flex items-center border-b ${fields.username ? "border-red-500" : "border-[#152737]/50"}`}>
+              <input value={username} onChange={(e) => setUsername(e.target.value)} className="h-12 flex-1 bg-transparent outline-none placeholder:text-[#152737]/75" placeholder="Username" autoComplete="username" />
+              <User size={18} />
             </div>
-            {fields.email && <small className="mt-1 block text-red-600">{fields.email}</small>}
+            {fields.username && <small className="mt-1 block text-red-600">{fields.username}</small>}
           </label>
           <label className="mt-5 block">
             <span className="sr-only">Password</span>
             <div className={`flex items-center border-b ${fields.password ? "border-red-500" : "border-[#152737]/50"}`}>
-              <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="h-12 flex-1 bg-transparent outline-none placeholder:text-[#152737]/75" placeholder="Password" />
+              <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="h-12 flex-1 bg-transparent outline-none placeholder:text-[#152737]/75" placeholder="Password" autoComplete="current-password" />
               <button type="button" onClick={() => setShowPassword((value) => !value)}>{showPassword ? <Eye size={18} /> : <EyeOff size={18} />}</button>
             </div>
             {fields.password && <small className="mt-1 block text-red-600">{fields.password}</small>}
