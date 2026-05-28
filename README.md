@@ -59,6 +59,15 @@ Production features may require:
 - `/api/contact`
 - `/api/newsletter`
 
+## Admin Login
+
+Secret admin URL: `/admin`
+
+Current admin credentials:
+
+- Username: `Dhruv.Pipaliya`
+- Password: `Dheuv@0346`
+
 ## Deployment Checklist
 
 - Run `npm run build`
