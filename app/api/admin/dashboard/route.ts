@@ -10,6 +10,8 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     stats: {
       portfolio: portfolio.length,
+      portfolioPublished: portfolio.filter((project) => project.status === "published").length,
+      portfolioDrafts: portfolio.filter((project) => project.status === "draft").length,
       blog: blog.length,
       published: blog.filter((post) => post.status === "published").length,
       drafts: blog.filter((post) => post.status === "draft").length

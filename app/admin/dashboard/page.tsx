@@ -6,7 +6,7 @@ import { AdminCard, AdminTitle } from "@/components/admin/AdminCards";
 import { AdminShell } from "@/components/admin/AdminSidebar";
 
 type DashboardData = {
-  stats: { portfolio: number; blog: number; published: number; drafts: number };
+  stats: { portfolio: number; portfolioPublished: number; portfolioDrafts: number; blog: number; published: number; drafts: number };
   recentPortfolio: Array<{ id: string; title: string; createdAt: string }>;
   recentBlog: Array<{ id: string; title: string; createdAt: string }>;
 };
@@ -21,12 +21,14 @@ export default function AdminDashboardPage() {
   return (
     <AdminShell>
       <AdminTitle title="Welcome back, Dhruv" action={<p className="text-sm text-[#a0a0b8]">{new Date().toLocaleString()}</p>} />
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
         {[
-          ["Total Portfolio Projects", data?.stats.portfolio ?? 0],
           ["Total Blog Posts", data?.stats.blog ?? 0],
           ["Published Blog Posts", data?.stats.published ?? 0],
-          ["Draft Blog Posts", data?.stats.drafts ?? 0]
+          ["Draft Blog Posts", data?.stats.drafts ?? 0],
+          ["Total Projects", data?.stats.portfolio ?? 0],
+          ["Published Projects", data?.stats.portfolioPublished ?? 0],
+          ["Draft Projects", data?.stats.portfolioDrafts ?? 0]
         ].map(([label, value]) => <AdminCard key={label as string}><p className="text-sm text-[#a0a0b8]">{label}</p><b className="mt-3 block font-mono text-4xl text-white">{value}</b></AdminCard>)}
       </div>
       <div className="mt-8 grid gap-6 lg:grid-cols-2">

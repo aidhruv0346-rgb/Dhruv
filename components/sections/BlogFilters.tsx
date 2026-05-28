@@ -4,11 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
-import { posts } from "@/lib/data";
 
 const categories = ["All", "SEO", "Meta Ads", "Social Media", "WordPress", "Blog", "Copywriting", "Marketing Tips"];
 
-export function BlogFilters() {
+type BlogCard = {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  coverImage: string;
+  publishedAt: string;
+  readTime: number;
+  author: string;
+};
+
+export function BlogFilters({ posts }: { posts: BlogCard[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const visiblePosts = useMemo(() => {
@@ -44,13 +54,13 @@ export function BlogFilters() {
           {visiblePosts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="card-hover overflow-hidden rounded-2xl border border-white/10 bg-bg-card">
               <div className="relative aspect-[4/3]">
-                <Image src={post.image} alt={post.title} fill className="object-cover" />
+                <Image src={post.coverImage} alt={post.title} fill className="object-cover" />
               </div>
               <div className="p-5">
                 <Badge>{post.category}</Badge>
                 <h3 className="mt-4 line-clamp-2 font-heading text-xl font-bold text-white">{post.title}</h3>
                 <p className="mt-3 line-clamp-3 text-sm leading-6">{post.excerpt}</p>
-                <p className="mt-5 font-mono text-xs text-ink-muted">Dhruv | {post.date} | {post.readTime} -&gt;</p>
+                <p className="mt-5 font-mono text-xs text-ink-muted">{post.author} | {new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} | {post.readTime} min read -&gt;</p>
               </div>
             </Link>
           ))}

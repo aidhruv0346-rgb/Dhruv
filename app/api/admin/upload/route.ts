@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const file = formData.get("file");
   if (!(file instanceof File)) return jsonError("No file uploaded");
-  if (!["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"].includes(file.type)) return jsonError("Invalid file type");
+  if (!["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml", "application/pdf"].includes(file.type)) return jsonError("Invalid file type");
   if (file.size > 5 * 1024 * 1024) return jsonError("File must be under 5MB");
 
   const extension = file.name.split(".").pop() || "png";

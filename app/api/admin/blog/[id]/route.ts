@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBlogRecords, saveBlogRecords, slugify } from "@/lib/adminStore";
+import { extractTableOfContents, getBlogRecords, readingTime, sanitizeHtml, saveBlogRecords, slugify } from "@/lib/adminStore";
 import { jsonError, requireAdmin } from "@/lib/adminApi";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -17,7 +17,24 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   const index = records.findIndex((item) => item.id === params.id);
   if (index < 0) return jsonError("Post not found", 404);
   const nextSlug = body.slug ? slugify(body.slug) : records[index].slug;
-  records[index] = { ...records[index], ...body, slug: nextSlug, updatedAt: new Date().toISOString() };
+  const bodyHtml = sanitizeHtml(String(body.body || body.content || records[index].body || ""));
+  const isFeatured = Boolean(body.isFeatured);
+  if (isFeatured) records.forEach((post) => { post.isFeatured = post.id === params.id; });
+  records[index] = {
+    ...records[index],
+    ...body,
+    slug: nextSlug,
+    body: bodyHtml,
+    content: bodyHtml,
+    coverImage: String(body.coverImage || body.featuredImage || records[index].coverImage),
+    featuredImage: String(body.featuredImage || body.coverImage || records[index].featuredImage),
+    readTime: Number(body.readTime || readingTime(bodyHtml)),
+    isFeatured,
+    metaDescription: String(body.metaDescription || body.metaDesc || body.excerpt || records[index].metaDescription || "").slice(0, 160),
+    metaDesc: String(body.metaDesc || body.metaDescription || body.excerpt || records[index].metaDesc || "").slice(0, 160),
+    tableOfContents: extractTableOfContents(bodyHtml),
+    updatedAt: new Date().toISOString()
+  };
   await saveBlogRecords(records);
   return NextResponse.json(records[index]);
 }
