@@ -7,6 +7,9 @@ import { AdminCard } from "@/components/admin/AdminCards";
 
 const categories = ["SEO", "Meta Ads", "Social Media", "WordPress", "Blog", "Copywriting"];
 type Metric = { label: string; value: string };
+type GalleryItem = { url: string; caption: string };
+type Technology = { name: string; category: string; icon?: string };
+type TimelineItem = { label: string; value: string };
 
 function slugify(input: string) {
   return input.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -24,10 +27,18 @@ export function PortfolioForm({ initial }: { initial?: any }) {
     coverImage: initial?.coverImage || initial?.imageUrl || "/images/project-1.svg",
     pdfUrl: initial?.pdfUrl || "",
     projectUrl: initial?.projectUrl || "",
+    year: initial?.year || new Date().getFullYear(),
+    duration: initial?.duration || "",
+    teamSize: initial?.teamSize || "",
+    myRole: initial?.myRole || "",
     isFeatured: Boolean(initial?.isFeatured),
     status: initial?.status || "draft",
     order: initial?.order ?? initial?.displayOrder ?? 0,
     metrics: (Array.isArray(initial?.metrics) && initial.metrics.length ? initial.metrics : [{ label: "Traffic", value: "+145%" }]) as Metric[],
+    gallery: (Array.isArray(initial?.gallery) && initial.gallery.length ? initial.gallery : [{ url: initial?.coverImage || initial?.imageUrl || "/images/project-1.svg", caption: "Project overview" }]) as GalleryItem[],
+    technologies: (Array.isArray(initial?.technologies) && initial.technologies.length ? initial.technologies : [{ name: "SEO", category: "Marketing", icon: "" }]) as Technology[],
+    features: Array.isArray(initial?.features) ? initial.features.join("\n") : "Strategy planning\nCreative execution\nPerformance tracking\nOptimization reporting",
+    timeline: (Array.isArray(initial?.timeline) && initial.timeline.length ? initial.timeline : [{ label: "Discovery", value: "Goals and current performance review" }]) as TimelineItem[],
     tags: Array.isArray(initial?.tags) ? initial.tags.join(", ") : "",
     metaTitle: initial?.metaTitle || "",
     metaDescription: initial?.metaDescription || ""
@@ -35,7 +46,7 @@ export function PortfolioForm({ initial }: { initial?: any }) {
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState("");
 
-  function update(key: string, value: string | boolean | number | Metric[]) {
+  function update(key: string, value: string | boolean | number | Metric[] | GalleryItem[] | Technology[] | TimelineItem[]) {
     setForm((current) => {
       const next = { ...current, [key]: value };
       if (key === "title" && !current.slug) next.slug = slugify(String(value));
@@ -48,6 +59,18 @@ export function PortfolioForm({ initial }: { initial?: any }) {
   function updateMetric(index: number, key: "label" | "value", value: string) {
     const metrics = form.metrics.map((metric: Metric, metricIndex: number) => metricIndex === index ? { ...metric, [key]: value } : metric);
     update("metrics", metrics);
+  }
+
+  function updateGallery(index: number, key: keyof GalleryItem, value: string) {
+    update("gallery", form.gallery.map((item: GalleryItem, itemIndex: number) => itemIndex === index ? { ...item, [key]: value } : item));
+  }
+
+  function updateTechnology(index: number, key: keyof Technology, value: string) {
+    update("technologies", form.technologies.map((item: Technology, itemIndex: number) => itemIndex === index ? { ...item, [key]: value } : item));
+  }
+
+  function updateTimeline(index: number, key: keyof TimelineItem, value: string) {
+    update("timeline", form.timeline.map((item: TimelineItem, itemIndex: number) => itemIndex === index ? { ...item, [key]: value } : item));
   }
 
   async function upload(file: File, field: "coverImage" | "pdfUrl") {
@@ -75,6 +98,10 @@ export function PortfolioForm({ initial }: { initial?: any }) {
       displayOrder: Number(form.order),
       tags: form.tags.split(",").map((tag: string) => tag.trim()).filter(Boolean),
       metrics: form.metrics.filter((metric: Metric) => metric.label && metric.value),
+      gallery: form.gallery.filter((item: GalleryItem) => item.url),
+      technologies: form.technologies.filter((item: Technology) => item.name),
+      features: form.features.split("\n").map((item: string) => item.trim()).filter(Boolean),
+      timeline: form.timeline.filter((item: TimelineItem) => item.label && item.value),
       metaTitle: form.metaTitle || form.title,
       metaDescription: form.metaDescription || form.excerpt
     };
@@ -101,6 +128,12 @@ export function PortfolioForm({ initial }: { initial?: any }) {
           <label className="text-sm text-[#a0a0b8]">Slug<input className={`${input} mt-2`} value={form.slug} onChange={(e) => update("slug", slugify(e.target.value))} /></label>
           <select className={input} value={form.category} onChange={(e) => update("category", e.target.value)}>{categories.map((cat) => <option key={cat}>{cat}</option>)}</select>
           <input className={input} placeholder="Client Name" value={form.clientName} onChange={(e) => update("clientName", e.target.value)} />
+          <div className="grid gap-3 md:grid-cols-4">
+            <input className={input} type="number" placeholder="Year" value={form.year} onChange={(e) => update("year", Number(e.target.value))} />
+            <input className={input} placeholder="Duration" value={form.duration} onChange={(e) => update("duration", e.target.value)} />
+            <input className={input} placeholder="Team Size" value={form.teamSize} onChange={(e) => update("teamSize", e.target.value)} />
+            <input className={input} placeholder="My Role" value={form.myRole} onChange={(e) => update("myRole", e.target.value)} />
+          </div>
           <input className={input} required placeholder="Excerpt / Result Stat" value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} />
           <textarea className={`${input} min-h-[360px] font-mono leading-7`} required placeholder="<h2>Challenge</h2><p>Write case study details...</p>" value={form.description} onChange={(e) => update("description", e.target.value)} />
           <div className="rounded-lg border border-white/10 p-4">
@@ -111,6 +144,44 @@ export function PortfolioForm({ initial }: { initial?: any }) {
                   <input className={input} placeholder="Label" value={metric.label} onChange={(e) => updateMetric(index, "label", e.target.value)} />
                   <input className={input} placeholder="Value" value={metric.value} onChange={(e) => updateMetric(index, "value", e.target.value)} />
                   <button type="button" onClick={() => update("metrics", form.metrics.filter((_: Metric, metricIndex: number) => metricIndex !== index))} className="rounded-lg border border-white/10 px-3 text-red-300">Remove</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-lg border border-white/10 p-4">
+            <div className="flex items-center justify-between gap-3"><p className="font-bold text-white">Gallery</p><button type="button" onClick={() => update("gallery", [...form.gallery, { url: "", caption: "" }])} className="rounded-lg bg-[#2563eb] px-3 py-2 text-xs font-bold text-white">+ Add Image</button></div>
+            <div className="mt-4 grid gap-3">
+              {form.gallery.map((item, index) => (
+                <div key={index} className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
+                  <input className={input} placeholder="Image URL" value={item.url} onChange={(e) => updateGallery(index, "url", e.target.value)} />
+                  <input className={input} placeholder="Caption" value={item.caption} onChange={(e) => updateGallery(index, "caption", e.target.value)} />
+                  <button type="button" onClick={() => update("gallery", form.gallery.filter((_: GalleryItem, itemIndex: number) => itemIndex !== index))} className="rounded-lg border border-white/10 px-3 text-red-300">Remove</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-lg border border-white/10 p-4">
+            <div className="flex items-center justify-between gap-3"><p className="font-bold text-white">Technologies / Tools</p><button type="button" onClick={() => update("technologies", [...form.technologies, { name: "", category: "Marketing", icon: "" }])} className="rounded-lg bg-[#2563eb] px-3 py-2 text-xs font-bold text-white">+ Add Tool</button></div>
+            <div className="mt-4 grid gap-3">
+              {form.technologies.map((item, index) => (
+                <div key={index} className="grid gap-2 md:grid-cols-[1fr_1fr_1fr_auto]">
+                  <input className={input} placeholder="Name" value={item.name} onChange={(e) => updateTechnology(index, "name", e.target.value)} />
+                  <input className={input} placeholder="Category" value={item.category} onChange={(e) => updateTechnology(index, "category", e.target.value)} />
+                  <input className={input} placeholder="Icon URL optional" value={item.icon || ""} onChange={(e) => updateTechnology(index, "icon", e.target.value)} />
+                  <button type="button" onClick={() => update("technologies", form.technologies.filter((_: Technology, itemIndex: number) => itemIndex !== index))} className="rounded-lg border border-white/10 px-3 text-red-300">Remove</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <label className="text-sm text-[#a0a0b8]">Key Features, one per line<textarea className={`${input} mt-2 min-h-32`} value={form.features} onChange={(e) => update("features", e.target.value)} /></label>
+          <div className="rounded-lg border border-white/10 p-4">
+            <div className="flex items-center justify-between gap-3"><p className="font-bold text-white">Timeline</p><button type="button" onClick={() => update("timeline", [...form.timeline, { label: "", value: "" }])} className="rounded-lg bg-[#2563eb] px-3 py-2 text-xs font-bold text-white">+ Add Step</button></div>
+            <div className="mt-4 grid gap-3">
+              {form.timeline.map((item, index) => (
+                <div key={index} className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
+                  <input className={input} placeholder="Label" value={item.label} onChange={(e) => updateTimeline(index, "label", e.target.value)} />
+                  <input className={input} placeholder="Value" value={item.value} onChange={(e) => updateTimeline(index, "value", e.target.value)} />
+                  <button type="button" onClick={() => update("timeline", form.timeline.filter((_: TimelineItem, itemIndex: number) => itemIndex !== index))} className="rounded-lg border border-white/10 px-3 text-red-300">Remove</button>
                 </div>
               ))}
             </div>

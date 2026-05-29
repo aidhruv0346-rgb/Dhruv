@@ -14,6 +14,14 @@ export type PortfolioRecord = {
   imageUrl: string;
   pdfUrl?: string;
   projectUrl?: string;
+  year: number;
+  duration: string;
+  teamSize: string;
+  myRole: string;
+  gallery: Array<{ url: string; caption: string }>;
+  technologies: Array<{ name: string; category: string; icon?: string }>;
+  features: string[];
+  timeline: Array<{ label: string; value: string }>;
   isFeatured: boolean;
   metrics: Array<{ label: string; value: string }>;
   status: "draft" | "published";
@@ -184,6 +192,8 @@ export function normalizeBlog(record: Partial<BlogRecord>): BlogRecord {
 export function normalizePortfolio(record: Partial<PortfolioRecord>): PortfolioRecord {
   const order = Number(record.order ?? record.displayOrder ?? 0);
   const excerpt = String(record.excerpt || record.resultStat || "");
+  const tags = Array.isArray(record.tags) ? record.tags.map(String) : [];
+  const fallbackYear = new Date(record.createdAt || Date.now()).getFullYear();
   return {
     id: String(record.id || slugify(String(record.title || "portfolio-project")) || makeFallbackId("portfolio")),
     slug: slugify(String(record.slug || record.title || "portfolio-project")),
@@ -197,12 +207,35 @@ export function normalizePortfolio(record: Partial<PortfolioRecord>): PortfolioR
     imageUrl: String(record.imageUrl || record.coverImage || "/images/project-1.svg"),
     pdfUrl: String(record.pdfUrl || ""),
     projectUrl: String(record.projectUrl || ""),
+    year: Number(record.year || fallbackYear),
+    duration: String(record.duration || "3 months"),
+    teamSize: String(record.teamSize || "1 specialist"),
+    myRole: String(record.myRole || "Digital Marketing Strategist"),
+    gallery: Array.isArray(record.gallery) && record.gallery.length
+      ? record.gallery.map((item) => ({ url: String(item.url || ""), caption: String(item.caption || "") })).filter((item) => item.url)
+      : [
+          { url: String(record.coverImage || record.imageUrl || "/images/project-1.svg"), caption: "Project overview" },
+          { url: String(record.imageUrl || record.coverImage || "/images/project-1.svg"), caption: "Campaign snapshot" }
+        ],
+    technologies: Array.isArray(record.technologies) && record.technologies.length
+      ? record.technologies.map((item) => ({ name: String(item.name || ""), category: String(item.category || "Tool"), icon: String(item.icon || "") })).filter((item) => item.name)
+      : tags.slice(0, 4).map((tag) => ({ name: tag, category: "Marketing" })),
+    features: Array.isArray(record.features) && record.features.length
+      ? record.features.map(String)
+      : ["Strategy planning", "Creative execution", "Performance tracking", "Optimization reporting"],
+    timeline: Array.isArray(record.timeline) && record.timeline.length
+      ? record.timeline.map((item) => ({ label: String(item.label || ""), value: String(item.value || "") })).filter((item) => item.label && item.value)
+      : [
+          { label: "Discovery", value: "Goals, audience, and current performance review" },
+          { label: "Execution", value: "Campaign setup, content, and optimization" },
+          { label: "Reporting", value: "Results review and next-step recommendations" }
+        ],
     isFeatured: Boolean(record.isFeatured),
     metrics: Array.isArray(record.metrics) ? record.metrics.map((metric) => ({ label: String(metric.label || ""), value: String(metric.value || "") })).filter((metric) => metric.label && metric.value) : [],
     status: record.status === "draft" ? "draft" : "published",
     order,
     displayOrder: order,
-    tags: Array.isArray(record.tags) ? record.tags.map(String) : [],
+    tags,
     metaTitle: String(record.metaTitle || record.title || "Portfolio Project").slice(0, 60),
     metaDescription: String(record.metaDescription || excerpt).slice(0, 160),
     createdAt: String(record.createdAt || new Date().toISOString()),

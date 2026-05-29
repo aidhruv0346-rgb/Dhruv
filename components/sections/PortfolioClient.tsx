@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
@@ -34,7 +35,7 @@ export function PortfolioClient({ projects }: { projects: Project[] }) {
                 {project.pdfUrl ? (
                   <a className="font-bold text-white" href={project.pdfUrl} target="_blank" rel="noreferrer">View Portfolio PDF →</a>
                 ) : (
-                  <span className="font-bold text-white">View Case Study →</span>
+                  <Link className="font-bold text-white" href={`/portfolio/${project.slug}`}>View Case Study →</Link>
                 )}
               </div>
             </div>
@@ -42,6 +43,7 @@ export function PortfolioClient({ projects }: { projects: Project[] }) {
               <Badge>{project.category}</Badge>
               <h2 className="mt-3 font-heading text-xl font-bold text-white">{project.title}</h2>
               <p className="mt-2 text-sm">{project.excerpt}</p>
+              <Link className="mt-4 inline-block font-bold text-[#93c5fd]" href={`/portfolio/${project.slug}`}>View Details →</Link>
               {project.pdfUrl && <a className="mt-4 inline-block font-bold text-accent-teal" href={project.pdfUrl} target="_blank" rel="noreferrer">Open PDF →</a>}
             </div>
           </motion.article>

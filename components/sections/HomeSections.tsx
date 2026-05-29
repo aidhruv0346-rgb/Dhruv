@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Check, Star } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
@@ -74,5 +75,6 @@ export function ServicesOverview() {
 }
 
 function PortfolioTeaser({ projects }: { projects: HomeProject[] }) {
-  return <section className="section-pad container-x text-center"><div className="mx-auto flex justify-center"><SectionLabel>My Work</SectionLabel></div><h2 className="font-heading text-4xl font-bold text-white md:text-5xl">Recent Projects That Made an Impact</h2><div className="mt-10 grid gap-5 md:grid-cols-3">{projects.slice(0,3).map((project) => <Reveal key={project.title} className="group overflow-hidden rounded-2xl border border-white/10 bg-bg-card text-left"><div className="relative aspect-[4/3]"><Image src={project.image} alt={project.title} fill className="object-cover" /><div className="absolute inset-0 grid place-items-center bg-black/70 opacity-0 transition group-hover:opacity-100"><span className="font-bold text-white">View →</span></div></div><div className="p-5"><Badge>{project.category}</Badge><h3 className="mt-3 font-heading text-xl font-bold text-white">{project.title}</h3><p className="mt-2 text-sm">{project.stat}</p></div></Reveal>)}</div><Button className="mt-10" href="/portfolio">See All Projects</Button></section>;
+  return <section className="section-pad container-x text-center"><div className="mx-auto flex justify-center"><SectionLabel>My Work</SectionLabel></div><h2 className="font-heading text-4xl font-bold text-white md:text-5xl">Recent Projects That Made an Impact</h2><div className="mt-10 grid gap-5 md:grid-cols-3">{projects.slice(0,3).map((project) => <Reveal key={project.slug} className="group overflow-hidden rounded-2xl border border-white/10 bg-bg-card text-left"><div className="relative aspect-[4/3]"><Image src={project.coverImage} alt={project.title} fill className="object-cover" /><div className="absolute inset-0 grid place-items-center bg-black/70 opacity-0 transition group-hover:opacity-100"><Link className="font-bold text-white" href={`/portfolio/${project.slug}`}>View -&gt;</Link></div></div><div className="p-5"><Badge>{project.category}</Badge><h3 className="mt-3 font-heading text-xl font-bold text-white">{project.title}</h3><p className="mt-2 text-sm">{project.excerpt}</p></div></Reveal>)}</div><Button className="mt-10" href="/portfolio">See All Projects</Button></section>;
 }
+
