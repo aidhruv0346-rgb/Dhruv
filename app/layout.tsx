@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     template: "%s | Dhruv Pipaliya"
   },
   description: "Dhruv Pipaliya is a results-driven digital marketer in Surat, India offering SEO, Social Media, Meta Ads, WordPress and Copywriting services.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg"
+  },
   openGraph: {
     title: "Dhruv Pipaliya | Digital Marketer",
     description: "Growth-driven digital marketing that delivers results.",
