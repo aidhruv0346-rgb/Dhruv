@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BarChart3, FileText, FolderKanban, LogOut, Settings } from "lucide-react";
+import { BarChart3, FileText, FolderKanban, Inbox, LogOut, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const nav = [
   { href: "/admin/dashboard", label: "Dashboard", Icon: BarChart3 },
+  { href: "/admin/contacts", label: "Contacts", Icon: Inbox },
   { href: "/admin/portfolio", label: "Portfolio", Icon: FolderKanban },
   { href: "/admin/blog", label: "Blog Posts", Icon: FileText },
   { href: "/admin/settings", label: "Settings", Icon: Settings }
